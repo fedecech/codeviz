@@ -1,7 +1,10 @@
 import React from "react";
+import MyRouter from "./components/MyRouter";
 
-const App: React.FC<{}> = ({}) => {
-  return <div className="px-2 text-2xl text-red-600">Hello</div>;
+interface AppProps {}
+
+const App: React.FC<AppProps> = ({}) => {
+  return <MyRouter />;
 };
 
 export default App;
