@@ -1,57 +1,39 @@
 /* eslint-disable no-alert */
-import React, { useState } from "react";
-import produce from "immer";
-
-import { Grid } from "../../lib/Grid";
+import React, { useEffect, useState } from "react";
 import VizNode from "./VizNode";
 import { ENodeType, Node } from "../../lib/Node";
 import { BFS } from "src/lib/algorithms/BFS";
+import { useGridStore } from "../../stores/useGridStore";
+import { Algorirthm } from "src/lib/algorithms/Algorithm";
 
-interface VisualizerProps {}
+interface VisualizerProps {
+  isRunning: boolean;
+  setIsRunning: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const Visualizer: React.FC<VisualizerProps> = ({}) => {
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [grid, setGrid] = useState<Grid>(
-    new Grid({
-      rows: 20,
-      cols: 50,
-      start: { row: 10, col: 5 },
-      end: { row: 10, col: 45 },
-    })
-  );
-  const [startNode, setStartNode] = useState<Node>(
-    new Node({ coords: { row: 10, col: 5 }, type: ENodeType.Start })
-  );
-  const [endNode, setEndNode] = useState<Node>(
-    new Node({ coords: { row: 10, col: 45 }, type: ENodeType.End })
-  );
+const Visualizer: React.FC<VisualizerProps> = ({ isRunning, setIsRunning }) => {
+  const {
+    grid,
+    setStartNodePos,
+    setEndNodePos,
+    toggleWallNode,
+    resetAnimation,
+  } = useGridStore();
 
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [editMode, setEditMode] = useState<"start" | "end" | "wall">("wall");
 
-  const updateGridNode = (cb: (grid: Node[][]) => void) => {
-    const newGrid = produce(grid.internal, cb);
-    setGrid(Grid.fromInternal(newGrid));
-  };
-
-  const toggleWall = (node: Node) => {
-    const { row, col } = node;
-    updateGridNode((gridCopy) => {
-      gridCopy[row][col].toggleIsWall();
-    });
-  };
-
   const handleMouseUp = (node: Node) => {
-    if (isAnimating) return;
+    if (isRunning) return;
 
     setEditMode("wall");
     setIsMouseDown(false);
   };
 
   const handleMouseDown = (node: Node) => {
-    if (isAnimating) return;
+    if (isRunning) return;
     if (node.isType(ENodeType.Wall) || node.isType(ENodeType.Normal))
-      toggleWall(node);
+      toggleWallNode(node);
     else if (node.isType(ENodeType.Start)) setEditMode("start");
     else if (node.isType(ENodeType.End)) setEditMode("end");
 
@@ -59,42 +41,67 @@ const Visualizer: React.FC<VisualizerProps> = ({}) => {
   };
 
   const handleMouseEnter = (node: Node) => {
-    if (isMouseDown && !isAnimating) {
+    if (isMouseDown && !isRunning) {
       if (editMode === "start") {
-        if (endNode.equals(node)) return;
-        const { row, col } = startNode;
-        updateGridNode((gridCopy) => gridCopy[row][col].setToNormalNode());
-        updateGridNode((gridCopy) => {
-          gridCopy[node.row][node.col].setToStartNode();
-        });
-        setStartNode(node);
+        if (grid.getStartNode().equals(node)) return;
+        setStartNodePos(node);
       } else if (editMode === "end") {
-        if (startNode.equals(node)) return;
-        const { row, col } = endNode;
-        updateGridNode((gridCopy) => gridCopy[row][col].setToNormalNode());
-        updateGridNode((gridCopy) => {
-          gridCopy[node.row][node.col].setToEndNode();
-        });
-        setEndNode(node);
-      } else if (editMode === "wall") toggleWall(node);
+        if (grid.getEndNode().equals(node)) return;
+        setEndNodePos(node);
+      } else if (editMode === "wall") toggleWallNode(node);
     }
   };
 
-  // fix setIsAnimating(false) called before animation ends (beacuse of setTimer in animate)
   const animateAlgorithm = () => {
-    setIsAnimating(true);
-    const d = new BFS();
-    const r = d.solve(grid, startNode, endNode);
-    d.animate(r.left, r.right);
-    console.log(r.right);
-    if (!r.right[r.right.length - 1].equals(endNode))
+    resetAnimation();
+    // setIsRunning(true);
+    const d: Algorirthm = new BFS();
+
+    const { left: visitedNodes, right: shortestPath } = d.solve(
+      grid,
+      grid.getStartNode(),
+      grid.getEndNode()
+    );
+
+    /**
+     *  APPORACH 1. changes nodes in state and triggers grid rerender (in Node.tsx based on the change the visual change take effect)
+     *  i.e. visited nodes get set as visited and on rerender their color becomes blue
+     *  less efficient than 2.
+     *  more difficult to change based on algorithm
+     *  makes more sense cause state grid should reflect algorithm changes in real scenario
+     */
+    // for (let i = 0; i <= visitedNodes.length; i++) {
+    //   if (i === visitedNodes.length) {
+    //     for (let y = 0; y <= shortestPath.length; y++) {
+    //       // add func setNodeToShortesPath
+    //       setTimeout(() => setNodeToShortesPath(visitedNodes[i]), i * 10);
+    //     }
+    //   }
+    //   setTimeout(() => setNodeToVisited(visitedNodes[i]), i * 10);
+    // }
+
+    // APPROACH 2. grid in state remain the same, elements are changed by changing class in their dom elements (id = "row-col")
+    // more efficient than 1.
+    // can change animation depending on algorithm
+    d.animate(visitedNodes, shortestPath);
+
+    if (!shortestPath[shortestPath.length - 1].equals(grid.getEndNode()))
       window.alert("Cannot find path");
-    else setIsAnimating(false);
+    else {
+      // setIsRunning(false);
+    }
   };
+
+  useEffect(() => {
+    if (isRunning) animateAlgorithm();
+    setIsRunning(false);
+  }, [isRunning]);
+
+  // fix // setIsRunning(false) called before animation ends (beacuse of setTimer in animate)
 
   return (
     <div className="flex flex-col items-center">
-      {grid.internal.map((nodes, row) => (
+      {grid.getNodes().map((nodes, row) => (
         <div key={row} className="flex items-center">
           {nodes.map((node, col) => (
             <VizNode
@@ -108,7 +115,6 @@ const Visualizer: React.FC<VisualizerProps> = ({}) => {
           ))}
         </div>
       ))}
-      <button onClick={animateAlgorithm}>Start</button>
     </div>
   );
 };

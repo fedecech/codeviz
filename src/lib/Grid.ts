@@ -14,45 +14,78 @@ interface IGridConstructor {
 }
 
 export class Grid {
-  internal: Node[][];
+  private internal: Node[][];
+  private startPos: IPoint;
+  private endPos: IPoint;
 
   constructor({ rows = 0, cols = 0, nodesGrid, start, end }: IGridConstructor) {
+    const defaultStart = start ? start : { row: Math.floor(rows / 2), col: 0 };
+    const defaultEnd = end ? end : { row: Math.floor(rows / 2), col: cols - 1 };
+    this.startPos = defaultStart;
+    this.endPos = defaultEnd;
+
     if (nodesGrid) this.internal = nodesGrid;
-    else if (rows && cols)
+    else if (rows && cols) {
       this.internal = Grid.initGrid(
         rows,
         cols,
-        start ? start : { row: Math.floor(rows / 2), col: 0 },
-        end ? end : { row: Math.floor(rows / 2), col: cols - 1 }
+        start ? start : defaultStart,
+        end ? end : defaultEnd
       );
-    else throw new Error("Need to provide costructor params");
+    } else throw new Error("Need to provide costructor params");
   }
 
-  // changeStartNode(oldStartNode: Node, newStartNode: Node){
-  //   const {row, col} = oldStartNode;
-  //   this.internal[row][col] = oldStartNode.setToNormalNode();
-  // }
-
-  changeNode(oldNode: Node, node: Node) {
-    const { row, col } = oldNode;
-    this.internal[row][col] = node;
+  getStartNode() {
+    const { row, col } = this.startPos;
+    return this.nodeAt({ row, col });
   }
 
-  toggleWallInNode(node: Node) {
-    const { row, col } = node;
-    this.internal[row][col].toggleIsWall();
+  getEndNode() {
+    const { row, col } = this.endPos;
+    return this.nodeAt({ row, col });
+  }
+
+  getNodes() {
+    // !exposes internal reference to obj
+    return this.internal;
+  }
+
+  changeStartNodePos(newPos: IPoint) {
+    const { row, col } = this.startPos;
+    this.nodeAt({ row, col }).setToNormalNode();
+    this.nodeAt({
+      row: newPos.row,
+      col: newPos.col,
+    }).setToStartNode();
+    this.startPos = { row: newPos.row, col: newPos.col };
     return this;
   }
 
-  static fromInternal(nodesGrid: Node[][]) {
-    return new Grid({ nodesGrid });
+  changeEndNodePos(newPos: IPoint) {
+    const { row, col } = this.endPos;
+    this.nodeAt({ row, col }).setToNormalNode();
+    this.nodeAt({
+      row: newPos.row,
+      col: newPos.col,
+    }).setToEndNode();
+    this.endPos = { row: newPos.row, col: newPos.col };
+    return this;
+  }
+
+  nodeAt({ row, col }: IPoint) {
+    return this.internal[row][col];
+  }
+
+  toggleWallInNode(pos: IPoint) {
+    const { row, col } = pos;
+    this.internal[row][col].toggleIsWall();
+    return this;
   }
 
   getNeightbours(node: Node) {
     const { row, col } = node;
     const neightbours: Node[] = [];
 
-    console.log(this.internal.length);
     // top
     if (row > 0) neightbours.push(this.internal[row - 1][col]);
 
@@ -69,15 +102,14 @@ export class Grid {
       neightbours.push(this.internal[row][col + 1]);
     }
 
-    console.log(node);
-    console.log(neightbours);
-
     return neightbours;
   }
 
   copy() {
-    return Grid.fromInternal(this.internal);
+    return Grid.fromInternal(this.internal, this.startPos, this.endPos);
   }
+
+  // *********** static constructors ******************
 
   static initGrid(rows: number, cols: number, start: IPoint, end: IPoint) {
     const g: Node[][] = [];
@@ -95,5 +127,9 @@ export class Grid {
     }
 
     return g;
+  }
+
+  static fromInternal(nodesGrid: Node[][], start: IPoint, end: IPoint) {
+    return new Grid({ nodesGrid, start, end });
   }
 }

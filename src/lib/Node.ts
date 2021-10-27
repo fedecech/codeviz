@@ -17,16 +17,12 @@ export class Node {
   col: number;
   visited: boolean;
   type: ENodeType;
-  distance: number;
-  previous: Node | null;
 
   constructor({ coords, type }: INodeConstructor) {
     this.visited = false;
     this.row = coords.row;
     this.col = coords.col;
     this.type = type;
-    this.distance = Infinity;
-    this.previous = null;
   }
   static fromString(str: string) {
     const arr = str.split("-");
@@ -54,6 +50,7 @@ export class Node {
 
   setToStartNode() {
     this.type = ENodeType.Start;
+    return this;
   }
 
   setToNormalNode() {
@@ -61,8 +58,14 @@ export class Node {
     return this;
   }
 
+  copy() {
+    const { row, col, type } = this;
+    return new Node({ coords: { row, col }, type });
+  }
+
   setToEndNode() {
     this.type = ENodeType.End;
+    return this;
   }
 
   isType(type: ENodeType) {

@@ -25,7 +25,7 @@ export class BFS extends Algorirthm {
       const v = visistedNodes[i];
       setTimeout(() => {
         const node_el = document.getElementById(v.toKey());
-        if (node_el) node_el.className = " transform scale w-7 h-7 bg-blue-500";
+        if (node_el) node_el.className = "transform scale w-7 h-7 bg-blue-500";
       }, i * 10);
     }
   }
@@ -36,7 +36,7 @@ export class BFS extends Algorirthm {
       setTimeout(() => {
         const node_el = document.getElementById(v.toKey());
         if (node_el)
-          node_el.className = " transform scale w-7 h-7 bg-yellow-500";
+          node_el.className = "transform scale w-7 h-7 bg-yellow-500";
       }, i * 50);
     }
   }
@@ -44,7 +44,7 @@ export class BFS extends Algorirthm {
   solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {
     const path = {};
     const queue: Node[] = [startNode];
-    const visited = {};
+    const visited: Map<string, Node> = new Map();
 
     visited[startNode.toKey()] = startNode;
     path[startNode.toKey()] = null;
@@ -52,11 +52,7 @@ export class BFS extends Algorirthm {
     let current: Node | undefined;
     while (queue.length) {
       current = queue.shift();
-      if (!current) break;
-      if (current.equals(endNode)) {
-        break;
-      }
-      console.log(current);
+      if (!current || current.equals(endNode)) break;
 
       grid.getNeightbours(current).forEach((n) => {
         if (!visited[n.toKey()] && !n.isType(ENodeType.Wall)) {
@@ -66,6 +62,10 @@ export class BFS extends Algorirthm {
         }
       });
     }
+
+    // remove start end node for animation in more general place
+    delete visited[startNode.toKey()];
+    delete visited[endNode.toKey()];
 
     let start = current;
     const path_lst: Node[] = [];
