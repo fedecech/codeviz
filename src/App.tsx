@@ -1,5 +1,5 @@
 import React from "react";
-import MyRouter from "./components/MyRouter";
+import MyRouter from "./components/nav/MyRouter";
 
 interface AppProps {}
 
