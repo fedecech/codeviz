@@ -1,19 +1,9 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-continue */
-/* eslint-disable max-classes-per-file */
 import { Grid } from "../Grid";
 import { Algorirthm } from "./Algorithm";
 import { ENodeType, Node } from "../Node";
-
-export class Pair<T> {
-  left: T;
-  right: T;
-
-  constructor(left: T, right: T) {
-    this.left = left;
-    this.right = right;
-  }
-}
+import { Pair } from "./Pair";
 
 export class BFS extends Algorirthm {
   solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {

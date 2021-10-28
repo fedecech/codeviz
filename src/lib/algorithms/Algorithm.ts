@@ -1,5 +1,5 @@
 import { Node } from "../Node";
-import { Pair } from "./BFS";
+import { Pair } from "./Pair";
 
 export abstract class Algorirthm {
   abstract solve(...params: any): Pair<Node[]>;
