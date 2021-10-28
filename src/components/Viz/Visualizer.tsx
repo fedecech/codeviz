@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import VizNode from "./VizNode";
 import { ENodeType, Node } from "../../lib/Node";
-import { BFS } from "src/lib/algorithms/BFS";
+// import { BFS } from "src/lib/algorithms/BFS";
 import { useGridStore } from "../../stores/useGridStore";
 import { Algorirthm } from "src/lib/algorithms/Algorithm";
+// import { DFS } from "src/lib/algorithms/DFS";
+import { Dijkstra } from "src/lib/algorithms/Dijkstra";
 
 interface VisualizerProps {
   isRunning: boolean;
@@ -56,7 +58,7 @@ const Visualizer: React.FC<VisualizerProps> = ({ isRunning, setIsRunning }) => {
   const animateAlgorithm = () => {
     resetAnimation();
     // setIsRunning(true);
-    const d: Algorirthm = new BFS();
+    const d: Algorirthm = new Dijkstra();
 
     const { left: visitedNodes, right: shortestPath } = d.solve(
       grid,
