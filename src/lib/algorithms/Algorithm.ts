@@ -13,7 +13,7 @@ export abstract class Algorirthm {
       const v = visistedNodes[i];
       setTimeout(() => {
         const node_el = document.getElementById(v.toKey());
-        if (node_el) node_el.className = "transform scale w-7 h-7 bg-blue-500";
+        if (node_el) node_el.className += " visited";
       }, i * 10);
     }
   }
@@ -23,8 +23,7 @@ export abstract class Algorirthm {
       const v = shortestPath[i];
       setTimeout(() => {
         const node_el = document.getElementById(v.toKey());
-        if (node_el)
-          node_el.className = "transform scale w-7 h-7 bg-yellow-500";
+        if (node_el) node_el.className += " shortest-path";
       }, i * 50);
     }
   }
