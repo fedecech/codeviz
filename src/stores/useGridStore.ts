@@ -1,7 +1,7 @@
 import { IPoint } from "./../lib/Grid";
 import { Grid } from "../lib/Grid";
 import combine from "zustand";
-import { ENodeType } from "src/lib/Node";
+// import { ENodeType } from "src/lib/Node";
 
 interface GridState {
   grid: Grid;
@@ -38,18 +38,18 @@ export const useGridStore = combine<GridState>((set) => ({
   resetAnimation: () =>
     set(({ grid }) => {
       // ! find nicer way to do it
-      grid.getNodes().forEach((nodes) => {
-        nodes.forEach((node) => {
-          const el = document.getElementById(node.toKey());
-          if (el) {
-            if (node.isType(ENodeType.Start))
-              el.className = "w-7 h-7 bg-green-500";
-            else if (node.isType(ENodeType.End))
-              el.className = "w-7 h-7 bg-red-500";
-            else el.className = "w-7 h-7 border";
-          }
-        });
-      });
+      const vels = document.querySelectorAll(".visited");
+
+      for (let i = 0; i < vels.length; i++) {
+        const element = vels[i];
+        element.classList.remove("visited");
+      }
+      const sel = document.querySelectorAll(".shortest-path");
+      for (let i = 0; i < sel.length; i++) {
+        const element = sel[i];
+        element.classList.remove("shortest-path");
+      }
+
       return { grid };
     }),
   resetGrid: () =>

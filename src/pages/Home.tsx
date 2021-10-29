@@ -1,9 +1,7 @@
-import {
-  CogIcon,
-  ChevronDoubleDownIcon,
-  ChevronDoubleUpIcon,
-} from "@heroicons/react/outline";
+// import { CogIcon } from "@heroicons/react/outline";
+import { CogIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
+import Settings from "src/components/Settings";
 import { useGridStore } from "src/stores/useGridStore";
 import Visualizer from "../components/Viz/Visualizer";
 
@@ -11,17 +9,15 @@ interface HomeProps {}
 
 const Home: React.FC<HomeProps> = ({}) => {
   const { resetGrid } = useGridStore();
-  const [isActionOpen, setIsActionOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
-
-  const toggleisActionOpen = () => setIsActionOpen((s) => !s);
 
   return (
     <div className="h-full w-full relative">
       <div className="flex flex-col items-center">
-        <div className="w-full flex items-center justify-between px-4 mt-2">
+        <div className="w-full flex items-center justify-center px-4 py-2 space-x-4">
           <button
-            className={`bg-red-600 text-white px-4 py-2 rounded-md`}
+            className={`bg-red-600 text-white text-sm px-4 py-2 rounded-md`}
             onClick={() => !isRunning && resetGrid()}
           >
             Reset board
@@ -34,27 +30,16 @@ const Home: React.FC<HomeProps> = ({}) => {
           >
             Visualize!
           </button>
-          <button onClick={toggleisActionOpen}>
-            <div className="flex items-center space-x-2">
-              {isActionOpen ? (
-                <ChevronDoubleUpIcon className="w-4 h-4" />
-              ) : (
-                <ChevronDoubleDownIcon className="w-4 h-4" />
-              )}
-              <p>Actions</p>
-            </div>
-          </button>
         </div>
-        {isActionOpen && <div className={`w-full`}>Actions</div>}
         <Visualizer isRunning={isRunning} setIsRunning={setIsRunning} />
       </div>
+      {isSettingsOpen && <Settings setIsSettingsOpen={setIsSettingsOpen} />}
       <button
-        className="absolute bottom-6 left-6 w-14 h-14 rounded-lg shadow-lg z-10"
+        className="absolute bottom-7 left-7 w-12 h-12 flex items-center justify-center rounded-lg"
         style={{ backgroundColor: "#5332DA" }}
+        onClick={() => setIsSettingsOpen(true)}
       >
-        <div className="h-full w-full flex items-center justify-center">
-          <CogIcon className="w-7 h-7 text-white" />
-        </div>
+        <CogIcon className="w-7 h-7 text-white" />
       </button>
     </div>
   );
