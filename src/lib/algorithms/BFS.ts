@@ -1,11 +1,11 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-continue */
 import { Grid } from "../Grid";
-import { Algorirthm } from "../Algorithm";
 import { ENodeType, Node } from "../Node";
 import { Pair } from "../Pair";
+import { PathFindingAlgorithm } from "../PathFindingAlgorithm";
 
-export class BFS extends Algorirthm {
+export class BFS extends PathFindingAlgorithm {
   solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {
     let path: Node[] = [];
     const queue: Node[] = [startNode];

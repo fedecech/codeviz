@@ -1,10 +1,10 @@
 /* eslint-disable no-loop-func */
 import { Grid } from "./../Grid";
-import { Algorirthm } from "src/lib/Algorithm";
 import { ENodeType, Node } from "../Node";
 import { Pair } from "../Pair";
+import { PathFindingAlgorithm } from "../PathFindingAlgorithm";
 
-export class DFS extends Algorirthm {
+export class DFS extends PathFindingAlgorithm {
   solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {
     const stack = [startNode];
     const visited: Map<string, Node> = new Map();

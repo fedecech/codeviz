@@ -1,15 +1,15 @@
 import { AStar } from "src/lib/algorithms/Astar";
 /* eslint-disable no-sync */
-import { Algorirthm } from "src/lib/Algorithm";
 import { BFS } from "src/lib/algorithms/BFS";
 import { DFS } from "src/lib/algorithms/DFS";
 import combine from "zustand";
 import { __algo_path__ } from "../lib/const";
+import { PathFindingAlgorithm } from "../lib/PathFindingAlgorithm";
 
 interface SettingState {
-  algorithm: Algorirthm;
+  algorithm: PathFindingAlgorithm;
   speed: number;
-  setAlgorithm: (algo: Algorirthm) => void;
+  setAlgorithm: (algo: PathFindingAlgorithm) => void;
   setSpeed: (speed: number) => void;
 }
 

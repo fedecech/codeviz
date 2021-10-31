@@ -1,10 +1,10 @@
 /* eslint-disable no-continue */
-import { Algorirthm } from "src/lib/Algorithm";
 import { Grid } from "../Grid";
 import { ENodeType, Node } from "../Node";
 import { Pair } from "../Pair";
+import { PathFindingAlgorithm } from "../PathFindingAlgorithm";
 
-export class AStar extends Algorirthm {
+export class AStar extends PathFindingAlgorithm {
   solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {
     const closed: Node[] = [];
     const open: Node[] = [startNode];

@@ -1,9 +1,9 @@
-import { Algorirthm } from "src/lib/Algorithm";
 import { Grid } from "../Grid";
 import { Node } from "../Node";
 import { Pair } from "../Pair";
+import { PathFindingAlgorithm } from "../PathFindingAlgorithm";
 
-export class Dijkstra extends Algorirthm {
+export class Dijkstra extends PathFindingAlgorithm {
   solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {
     const unvisted: Map<string, number> = new Map();
     const visited = {};
