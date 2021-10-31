@@ -43,12 +43,16 @@ const Visualizer: React.FC<VisualizerProps> = ({ isRunning, setIsRunning }) => {
   const handleMouseEnter = (node: Node) => {
     if (isMouseDown && !isRunning) {
       if (editMode === "start") {
-        if (grid.getStartNode().equals(node)) return;
+        if (grid.getEndNode().equals(node) || node.isWall()) return;
         setStartNodePos(node);
       } else if (editMode === "end") {
-        if (grid.getEndNode().equals(node)) return;
+        if (grid.getStartNode().equals(node) || node.isWall()) return;
         setEndNodePos(node);
-      } else if (editMode === "wall") toggleWallNode(node);
+      } else if (editMode === "wall") {
+        if (grid.getStartNode().equals(node) || grid.getEndNode().equals(node))
+          return;
+        toggleWallNode(node);
+      }
     }
   };
 
