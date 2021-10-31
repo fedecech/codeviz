@@ -17,18 +17,35 @@ export class Node {
   col: number;
   visited: boolean;
   type: ENodeType;
+  predecessor: Node | null;
+  gCost: number;
+  fCost: number;
+  hCost: number;
 
   constructor({ coords, type }: INodeConstructor) {
     this.visited = false;
     this.row = coords.row;
     this.col = coords.col;
     this.type = type;
+    this.predecessor = null;
+    this.gCost = 0;
+    this.fCost = Infinity;
+    this.hCost = Infinity;
   }
   static fromString(str: string) {
     const arr = str.split("-");
     const row = parseInt(arr[0]);
     const col = parseInt(arr[1]);
     return new Node({ coords: { row, col }, type: ENodeType.Normal });
+  }
+
+  setHCost(cost: number) {
+    this.hCost = cost;
+    this.setFCost(this.hCost + this.gCost);
+  }
+
+  setFCost(cost: number) {
+    this.fCost = cost;
   }
 
   toKey() {

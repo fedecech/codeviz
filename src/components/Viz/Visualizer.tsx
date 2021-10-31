@@ -4,7 +4,8 @@ import VizNode from "./VizNode";
 import { ENodeType, Node } from "../../lib/Node";
 import { useGridStore } from "../../stores/useGridStore";
 import { Algorirthm } from "src/lib/algorithms/Algorithm";
-import { BFS } from "src/lib/algorithms/BFS";
+// import { BFS } from "src/lib/algorithms/BFS";
+import { AStar } from "src/lib/algorithms/Astar";
 
 interface VisualizerProps {
   isRunning: boolean;
@@ -56,7 +57,7 @@ const Visualizer: React.FC<VisualizerProps> = ({ isRunning, setIsRunning }) => {
   const animateAlgorithm = () => {
     resetAnimation();
     // setIsRunning(true);
-    const d: Algorirthm = new BFS();
+    const d: Algorirthm = new AStar();
 
     const { left: visitedNodes, right: shortestPath } = d.solve(
       grid,
@@ -66,11 +67,11 @@ const Visualizer: React.FC<VisualizerProps> = ({ isRunning, setIsRunning }) => {
 
     d.animate(visitedNodes, shortestPath);
 
-    if (!shortestPath[shortestPath.length - 1].equals(grid.getEndNode()))
-      window.alert("Cannot find path");
-    else {
-      // setIsRunning(false);
-    }
+    // if (!shortestPath[shortestPath.length - 1].equals(grid.getEndNode()))
+    // window.alert("Cannot find path");
+    // else {
+    // setIsRunning(false);
+    // }
   };
 
   useEffect(() => {

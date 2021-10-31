@@ -12,6 +12,7 @@ steps:
 
 ### To fix
 
+- !IMPORTANT store dom element in Node class instance and use that to change start/end Node and animate
 - file: `useGridStore.ts`, find better way to reset board an adnimation;
 - file: `Visualizer.tsx`, find a way to await d.animate() and set to false `isRunning`
 

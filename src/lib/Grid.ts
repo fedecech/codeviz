@@ -50,6 +50,14 @@ export class Grid {
     return this.internal;
   }
 
+  heuristicCost(from: Node, to: Node) {
+    const x_distance = Math.abs(from.row - to.row);
+    const y_distance = Math.abs(from.col - to.col);
+
+    const euclideanDistance = x_distance + y_distance;
+    return euclideanDistance;
+  }
+
   changeStartNodePos(newPos: IPoint) {
     const { row, col } = this.startPos;
     this.nodeAt({ row, col }).setToNormalNode();

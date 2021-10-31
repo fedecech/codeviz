@@ -27,4 +27,17 @@ export abstract class Algorirthm {
       }, i * 50);
     }
   }
+
+  backTracePath(finalNode: Node) {
+    const path: Node[] = [];
+    let current = finalNode;
+    let predecessor = current.predecessor;
+    while (predecessor !== null) {
+      path.push(predecessor);
+      current = predecessor;
+      predecessor = current.predecessor;
+    }
+    path.push(finalNode);
+    return path.reverse();
+  }
 }
