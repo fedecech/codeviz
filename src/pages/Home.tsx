@@ -1,5 +1,5 @@
 // import { CogIcon } from "@heroicons/react/outline";
-import { CogIcon } from "@heroicons/react/outline";
+import { ChartBarIcon, CogIcon, MinusCircleIcon } from "@heroicons/react/solid";
 import React, { useState } from "react";
 import Settings from "src/components/Settings";
 import { useGridStore } from "src/stores/useGridStore";
@@ -17,10 +17,11 @@ const Home: React.FC<HomeProps> = ({}) => {
       <div className="flex flex-col items-center">
         <div className="w-full flex items-center justify-center px-4 py-2 space-x-4">
           <button
-            className={`bg-red-600 text-white text-sm px-4 py-2 rounded-md`}
+            className={`bg-red-600 text-white text-sm px-4 py-2 rounded-md flex items-center space-x-2`}
             onClick={() => !isRunning && resetGrid()}
           >
-            Reset board
+            <MinusCircleIcon className="w-5 h-5" />
+            <span>Reset board</span>
           </button>
           <button
             className={`${
@@ -28,7 +29,10 @@ const Home: React.FC<HomeProps> = ({}) => {
             } text-white px-4 py-2 rounded-md`}
             onClick={() => !isRunning && setIsRunning(true)}
           >
-            Visualize!
+            <div className="flex items-center space-x-2">
+              <ChartBarIcon className="w-5 h-5" />
+              <span className="font-bold text-medium">Start Viz</span>
+            </div>
           </button>
         </div>
         <Visualizer isRunning={isRunning} setIsRunning={setIsRunning} />

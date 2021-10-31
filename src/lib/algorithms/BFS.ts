@@ -1,9 +1,9 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-continue */
 import { Grid } from "../Grid";
-import { Algorirthm } from "./Algorithm";
+import { Algorirthm } from "../Algorithm";
 import { ENodeType, Node } from "../Node";
-import { Pair } from "./Pair";
+import { Pair } from "../Pair";
 
 export class BFS extends Algorirthm {
   solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {

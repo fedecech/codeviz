@@ -1,30 +1,33 @@
-import { Node } from "../Node";
+import { Node } from "./Node";
 import { Pair } from "./Pair";
 
 export abstract class Algorirthm {
   abstract solve(...params: any): Pair<Node[]>;
 
-  animate(visistedNodes: Node[], shortestPath: Node[]): void {
+  animate(visistedNodes: Node[], shortestPath: Node[], speed: number): void {
     for (let i = 0; i <= visistedNodes.length; i++) {
       if (i === visistedNodes.length) {
-        setTimeout(() => this.animateShortestPath(shortestPath), 10 * i);
+        setTimeout(
+          () => this.animateShortestPath(shortestPath, speed),
+          speed * i
+        );
         return;
       }
       const v = visistedNodes[i];
       setTimeout(() => {
         const node_el = document.getElementById(v.toKey());
-        if (node_el) node_el.className += " visited";
-      }, i * 10);
+        if (node_el) node_el.classList.add("visited");
+      }, i * speed);
     }
   }
 
-  private animateShortestPath(shortestPath: Node[]) {
+  private animateShortestPath(shortestPath: Node[], speed: number) {
     for (let i = 0; i < shortestPath.length; i++) {
       const v = shortestPath[i];
       setTimeout(() => {
         const node_el = document.getElementById(v.toKey());
-        if (node_el) node_el.className += " shortest-path";
-      }, i * 50);
+        if (node_el) node_el.classList.add("shortest-path");
+      }, i * speed);
     }
   }
 
@@ -37,7 +40,8 @@ export abstract class Algorirthm {
       current = predecessor;
       predecessor = current.predecessor;
     }
+    path.reverse();
     path.push(finalNode);
-    return path.reverse();
+    return path;
   }
 }

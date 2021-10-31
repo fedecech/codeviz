@@ -6,7 +6,7 @@ interface INodeConstructor {
 }
 
 export enum ENodeType {
-  Normal = "normal",
+  Normal = "node",
   Wall = "wall",
   Start = "start",
   End = "end",

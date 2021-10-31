@@ -1,8 +1,8 @@
 /* eslint-disable no-loop-func */
 import { Grid } from "./../Grid";
-import { Algorirthm } from "src/lib/algorithms/Algorithm";
+import { Algorirthm } from "src/lib/Algorithm";
 import { ENodeType, Node } from "../Node";
-import { Pair } from "./Pair";
+import { Pair } from "../Pair";
 
 export class DFS extends Algorirthm {
   solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {

@@ -1,12 +1,25 @@
-import { ChevronDownIcon, XIcon } from "@heroicons/react/outline";
-import React, { useState } from "react";
+import { CogIcon, XIcon } from "@heroicons/react/outline";
+import React from "react";
+import {
+  algorithms,
+  speeds,
+  useSettingsStore,
+} from "src/stores/useSettingsStore";
+import FormSelector from "./FormSelector";
 
 interface SettingsProps {
   setIsSettingsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Settings: React.FC<SettingsProps> = ({ setIsSettingsOpen }) => {
-  const [isAlgoSelectOpen, setIsAlgoSelectOpen] = useState(false);
+  const { algorithm, setAlgorithm, speed, setSpeed } = useSettingsStore();
+
+  const algNameSelected =
+    Object.keys(algorithms).find((v) => algorithms[v] === algorithm) ||
+    "Breath First Search";
+
+  const speedNameSelected =
+    Object.keys(speeds).find((v) => speeds[v] === speed) || "fast";
 
   return (
     <div
@@ -27,59 +40,31 @@ const Settings: React.FC<SettingsProps> = ({ setIsSettingsOpen }) => {
             </button>
           </div>
         </div>
-        <div className="relative inline-block text-left">
-          <div>
-            <button
-              type="button"
-              className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
-              id="menu-button"
-              aria-expanded="true"
-              aria-haspopup="true"
-              onClick={() => setIsAlgoSelectOpen((s) => !s)}
-            >
-              Options
-              <ChevronDownIcon className="w-7 h-7" />
-            </button>
+        <div className="flex flex-col space-y-6 w-full">
+          <div className="flex items-center space-x-2">
+            <CogIcon className="w-8 h-8 text-gray-800" />
+            <h1 className="text-3xl font-semibold text-gray-800">Settings</h1>
           </div>
-          {isAlgoSelectOpen && (
-            <div
-              className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="menu-button"
-              tabIndex={-1}
-            >
-              <div className="py-1" role="none">
-                <a
-                  href="#"
-                  className="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabIndex={-1}
-                  id="menu-item-0"
-                >
-                  Account settings
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabIndex={-1}
-                  id="menu-item-1"
-                >
-                  Support
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabIndex={-1}
-                  id="menu-item-2"
-                >
-                  License
-                </a>
-              </div>
-            </div>
-          )}
+          <div className="ml-3 flex items-center justify-between pr-8">
+            <p className="text-gray-700 font-medium ">Choose the algorithm</p>
+            <FormSelector
+              selection={Object.keys(algorithms)}
+              selected={algNameSelected}
+              setSelected={(a) => {
+                setAlgorithm(algorithms[a]);
+              }}
+            />
+          </div>
+          <div className="ml-3 flex items-center justify-between pr-8">
+            <p className="text-gray-700 font-medium ">Animation speed</p>
+            <FormSelector
+              selection={Object.keys(speeds)}
+              selected={speedNameSelected}
+              setSelected={(s) => {
+                setSpeed(speeds[s]);
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

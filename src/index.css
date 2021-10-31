@@ -11,8 +11,46 @@ body,
   max-height: 100%;
 }
 
+.node {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgb(229, 231, 235);
+}
+
+.wall {
+  background-color: black;
+  /* animation-name: scaleUp;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-iteration-count: 1; */
+  border: none;
+}
+
+.start {
+  background-color: transparent;
+  border: none;
+  color: rgb(8, 35, 156);
+  animation-name: scaleUp;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-iteration-count: 1;
+}
+
+.end {
+  background-color: transparent;
+  border: none;
+  color: rgb(8, 35, 156);
+  animation-name: scaleUp;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-iteration-count: 1;
+}
+
 .visited {
-  border: 1px solid rgb(158, 34, 230);
+  border: 1px solid rgb(248, 248, 248);
   animation-name: visitedAnimation;
   animation-duration: 1.5s;
   animation-timing-function: ease-out;
@@ -39,8 +77,27 @@ body,
   animation-play-state: running;
 }
 
+@keyframes scaleUp {
+  0% {
+    transform: scale(0.3);
+  }
+
+  90% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 @keyframes visitedAnimation {
   0% {
+    background-color: rgb(255, 254, 106);
+    transform: scale(1);
+  }
+
+  30% {
     transform: scale(0.3);
     background-color: rgba(7, 7, 66, 0.75);
     border-radius: 100%;

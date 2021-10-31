@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import VizNode from "./VizNode";
 import { ENodeType, Node } from "../../lib/Node";
 import { useGridStore } from "../../stores/useGridStore";
-import { Algorirthm } from "src/lib/algorithms/Algorithm";
-// import { BFS } from "src/lib/algorithms/BFS";
-import { AStar } from "src/lib/algorithms/Astar";
+import { useSettingsStore } from "src/stores/useSettingsStore";
 
 interface VisualizerProps {
   isRunning: boolean;
@@ -20,6 +18,7 @@ const Visualizer: React.FC<VisualizerProps> = ({ isRunning, setIsRunning }) => {
     toggleWallNode,
     resetAnimation,
   } = useGridStore();
+  const { algorithm, speed } = useSettingsStore();
 
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [editMode, setEditMode] = useState<"start" | "end" | "wall">("wall");
@@ -57,15 +56,14 @@ const Visualizer: React.FC<VisualizerProps> = ({ isRunning, setIsRunning }) => {
   const animateAlgorithm = () => {
     resetAnimation();
     // setIsRunning(true);
-    const d: Algorirthm = new AStar();
 
-    const { left: visitedNodes, right: shortestPath } = d.solve(
+    const { left: visitedNodes, right: shortestPath } = algorithm.solve(
       grid,
       grid.getStartNode(),
       grid.getEndNode()
     );
 
-    d.animate(visitedNodes, shortestPath);
+    algorithm.animate(visitedNodes, shortestPath, speed);
 
     // if (!shortestPath[shortestPath.length - 1].equals(grid.getEndNode()))
     // window.alert("Cannot find path");

@@ -1,8 +1,8 @@
 /* eslint-disable no-continue */
-import { Algorirthm } from "src/lib/algorithms/Algorithm";
+import { Algorirthm } from "src/lib/Algorithm";
 import { Grid } from "../Grid";
 import { ENodeType, Node } from "../Node";
-import { Pair } from "./Pair";
+import { Pair } from "../Pair";
 
 export class AStar extends Algorirthm {
   solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {
