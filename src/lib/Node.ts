@@ -60,6 +60,10 @@ export class Node {
     return this.type === ENodeType.Wall;
   }
 
+  setToWall() {
+    this.type = ENodeType.Wall;
+  }
+
   toggleIsWall() {
     if (this.type === ENodeType.Wall) this.type = ENodeType.Normal;
     else this.type = ENodeType.Wall;

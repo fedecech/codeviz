@@ -1,7 +1,7 @@
-import { AStar } from "src/lib/algorithms/Astar";
+import { AStar } from "src/lib/pathfinding/Astar";
 /* eslint-disable no-sync */
-import { BFS } from "src/lib/algorithms/BFS";
-import { DFS } from "src/lib/algorithms/DFS";
+import { BFS } from "src/lib/pathfinding/BFS";
+import { DFS } from "src/lib/pathfinding/DFS";
 import combine from "zustand";
 import { __algo_path__ } from "../lib/const";
 import { PathFindingAlgorithm } from "../lib/PathFindingAlgorithm";

@@ -3,10 +3,8 @@ import { Grid } from "./Grid";
 import { Node } from "./Node";
 import { Pair } from "./Pair";
 
-export class MazeAlgorithm extends Algorirthm {
-  solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]> {
-    throw new Error("Method not implemented.");
-  }
+export abstract class MazeAlgorithm extends Algorirthm {
+  abstract solve(grid: Grid, startNode: Node, endNode: Node): Pair<Node[]>;
 
   animate(visistedNodes: Node[], _: Node[], speed: number): void {
     for (let i = 0; i < visistedNodes.length; i++) {

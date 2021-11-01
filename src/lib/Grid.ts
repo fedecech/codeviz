@@ -35,6 +35,14 @@ export class Grid {
     } else throw new Error("Need to provide costructor params");
   }
 
+  getWidth() {
+    return this.internal[0].length;
+  }
+
+  getHeight() {
+    return this.internal.length;
+  }
+
   getStartNode() {
     const { row, col } = this.startPos;
     return this.nodeAt({ row, col });
