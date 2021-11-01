@@ -1,5 +1,5 @@
 /* eslint-disable no-loop-func */
-import { Grid } from "./../Grid";
+import { Grid } from "../Grid";
 import { ENodeType, Node } from "../Node";
 import { Pair } from "../Pair";
 import { PathFindingAlgorithm } from "../PathFindingAlgorithm";

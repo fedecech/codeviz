@@ -1,6 +1,6 @@
 /* eslint-disable no-continue */
 import { Grid } from "../Grid";
-import { ENodeType, Node } from "../Node";
+import { Node } from "../Node";
 import { Pair } from "../Pair";
 import { PathFindingAlgorithm } from "../PathFindingAlgorithm";
 
@@ -26,7 +26,7 @@ export class AStar extends PathFindingAlgorithm {
       }
 
       grid.getNeightbours(current).map((n) => {
-        if (!n.isType(ENodeType.Wall) && !this.includesNode(closed, n)) {
+        if (!n.isWall() && !this.includesNode(closed, n)) {
           const newCost = current.gCost + grid.heuristicCost(current, n);
           if (newCost < n.gCost || !this.includesNode(open, n)) {
             n.predecessor = current;
@@ -46,16 +46,26 @@ export class AStar extends PathFindingAlgorithm {
   }
 
   getMinNode(nodes: Node[]) {
-    let current = nodes.shift();
+    let current = nodes[0];
+    let indexCurrent = 0;
 
     if (!current) return undefined;
 
-    for (const n of nodes) {
-      if (n.fCost <= current.fCost) if (n.hCost < current.hCost) current = n;
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      if (
+        n.fCost <= current.fCost ||
+        (n.fCost === current.fCost && n.hCost < current.hCost)
+      ) {
+        current = n;
+        indexCurrent = i;
+      }
     }
 
+    nodes.splice(indexCurrent, 1);
     return current;
   }
+
   includesNode(nodes: Node[], node: Node) {
     for (const n of nodes) {
       if (n.equals(node)) return true;
