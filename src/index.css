@@ -27,6 +27,16 @@ body,
   border: none;
 }
 
+.wall-animated {
+  background-color: black;
+  animation-name: scaleUp;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-iteration-count: 1;
+  border: none;
+}
+
 .start {
   background-color: transparent;
   border: none;
